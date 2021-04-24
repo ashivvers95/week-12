@@ -13,14 +13,6 @@ app.use(express.json());
 //Use apiRoutes
 app.use('/api', apiRoutes);
 
-db.connect(err => {
-    if(err)throw err;
-    console.log('Database connected');
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-});
-});
-
 const promptUser = () => {
 return inquirer.prompt([
     {
@@ -40,45 +32,54 @@ return inquirer.prompt([
           'Remove role'
         ]
     }
-  ]).then(answers => { 
-        switch(answers) {
-        
-        case "View all employees":
-        break;
-
-        case "View all employees by department":
-        break;
-
-        case "View all employees by manager":
-        break;
-
-        case "Add employee":
-        break;
-
-        case "Remove employee":
-        break;
-
-        case "Update employee role":
-        break;
-
-        case "Update employee manager":
-        break;
-
-        case "View all roles":
-        break;
-
-        case "Add role":
-        break;
-
-        case "Remove role":
-        break;
-    }
-  })
+  ])
 };
+promptUser()
+.then(answers => { 
+    switch(answers.task) {
+    
+    case "View all employees":
+    break;
+
+    case "View all employees by department":
+    break;
+
+    case "View all employees by manager":
+    break;
+
+    case "Add employee":
+    break;
+
+    case "Remove employee":
+    break;
+
+    case "Update employee role":
+    break;
+
+    case "Update employee manager":
+    break;
+
+    case "View all roles":
+    break;
+
+    case "Add role":
+    break;
+
+    case "Remove role":
+    break;
+}
+});
+
+db.connect(err => {
+    if(err)throw err;
+    console.log('Database connected');
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+});
+});
 
 //default response for any other request (not found)
 app.use((req, res)=> {
     res.status(404).end();
 });
 
-promptUser();
