@@ -19,13 +19,31 @@ router.get('/employee/:id', (req, res) => {
     });
 });
 
-class EmployeeRoutes {
-    constructor(viewAllEmployees, deleteEmployees) {
-        this.viewAllEmployees = viewAllEmployees;
-        this.deleteEmployees = deleteEmployees;
-    }
+const employee = {
+{
+    addEmployee: function () {
+    router.post('/employee', ({ body }, res) => {
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+                     VALUES (?,?,?)`;
+        const params = [body.first_name, body.last_name, body.role_id, body.manager_id];
+      
+          db.query(sql, params, (err, result) => {
+            if(err) {
+                res.status(400).json({ error: err.message });
+                return;
+          }
+                res.json({
+                    message: 'success',
+                    data: body,
+                    changes: result.affectedRows
+                });
+      });
+      });
+    };
 
-    viewAllEmployees()  {
+  },
+  {  
+    viewAllEmployees: function () {
         router.get('/employee', (req, res) => {
             const sql = `SELECT * FROM employee`;
             db.query(sql, (err, rows) => {
@@ -40,8 +58,9 @@ class EmployeeRoutes {
             });
     });
 };
-
-    deleteEmployees()  {
+},
+{
+    deleteEmployees = function()  {
         router.delete('/employee/:id', (req, res) => {
             const sql = `DELETE FROM employee WHERE id =?`;
             const params = [req.params.id];
@@ -64,6 +83,6 @@ class EmployeeRoutes {
         }); 
     };
 };
-
+};
 module.exports = router;
-module.exports = EmployeeRoutes;
+module.exports = employeeRoutes;
