@@ -3,6 +3,7 @@ const db = require('./db/connection');
 const apiRoutes = require('./routes/apiRoutes');
 const inquirer = require('inquirer');
 const dbMethods = require('./routes/apiRoutes/methods');
+const cTable = require('console.table');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -40,7 +41,7 @@ promptUser()
     switch(answers.task) {
     
     case "View all employees":
-        viewAllEmployee();
+        dbMethods.viewAllEmployee();
     break;
 
     case "View all employees by department":
