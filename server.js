@@ -3,7 +3,6 @@ const db = require('./db/connection');
 const apiRoutes = require('./routes/apiRoutes/index');
 const inquirer = require('inquirer');
 const dbMethods = require('./routes/apiRoutes/methods');
-//const cTable = require('console.table');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -15,6 +14,7 @@ app.use(express.json());
 //Use apiRoutes
 app.use('/api', apiRoutes);
 
+//Questions
 const promptUser = () => {
 return inquirer.prompt([
     {
@@ -45,11 +45,11 @@ promptUser()
     break;
 
     case "View all employees by department":
-        viewAllEmployeeDepartment();
+      dbMethods.viewAllEmployeeDepartment();
     break;
 
     case "View all employees by manager":
-        viewAllEmployeeManager();
+      dbMethods.viewAllEmployeeManager();
     break;
 
     case "Add employee":
@@ -77,7 +77,7 @@ promptUser()
         }
       ])
       .then(answers => {
-        addEmployee(answers)
+        dbMethods.addEmployee(answers)
       });
     };
     add();
@@ -98,7 +98,7 @@ promptUser()
             }, 
           ])
           .then(answers => {
-            removeEmployee(answers)
+            dbMethods.removeEmployee(answers)
           });
         };
         remove();
@@ -124,7 +124,7 @@ promptUser()
             }
           ])
           .then(answers => {
-            updateEmployeeRole(answers)
+            dbMethods.updateEmployeeRole(answers)
           });
         };
         updateRole();
@@ -150,14 +150,14 @@ promptUser()
             }
           ])
           .then(answers => {
-            updateEmployeeManager(answers)
+            dbMethods.updateEmployeeManager(answers)
           });
         };
         updateManager();
     break;
 
     case "View all roles":
-        viewAllRoles();
+      dbMethods.viewAllRoles();
         
     break;
 
@@ -171,7 +171,7 @@ promptUser()
             },
           ])
           .then(answers => {
-            addRole(answers)
+            dbMethods.addRole(answers)
           });
         }
         addRoles();
@@ -187,7 +187,7 @@ promptUser()
             },
           ])
           .then(answers => {
-            removeRole(answers)
+            dbMethods.removeRole(answers)
           });
         };
         removeRoles();

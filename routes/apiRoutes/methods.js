@@ -1,5 +1,4 @@
-const express = require('express');
-//const router = express.Router();
+// const router = express.Router();
 const db = require('../../db/connection');
 
 const object = {
@@ -11,47 +10,135 @@ const object = {
                 res.status(500).json({ error: err.message });
                 return;
             }
-            res.json({
-                message: 'success',
-                data: rows
-            });
+            console.table(rows);
         });
     },
 
     viewAllEmployeeDepartment: function(req, res) {
-        
+        const sql = `SELECT employee.*, department.department_name AS party_name, COUNT(candidate_id) AS count
+        FROM votes
+        LEFT JOIN candidates ON votes.candidate_id = candidates.id
+        LEFT JOIN parties ON candidates.party_id = parties.id
+        GROUP BY candidate_id ORDER BY count DESC;`;
+
+        db.query(sql, (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            console.table(rows);
+        });
     },
     
     viewAllEmployeeManager: function(req, res) {
+        const sql = `SELECT * FROM employee WHERE manager_id = ?`;
+
+        db.query(sql, (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            console.table(rows);
+        });
 
     },
     
 
-    addEmployee: function(req, res) {
+    addEmployee: function({ body }, res) {
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES (?,?,?,?)`;
+
+        const params = [body.first_name, body.last_name, body.role_id, body.manager_id];
+
+        db.query(sql, params, (err, rows) => {
+            if(err) {
+                res.status(400).json({ error: err.message });
+                return;
+          }
+            console.table(rows);
+        });
 
     },
 
     removeEmployee: function(req, res) {
+        const sql = `DELETE employee WHERE id=?`;
+        const params = [req.params.id];
+
+        db.query(sql, params, (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            console.table(rows);
+        });
 
     },
     
     updateEmployeeRole: function(req, res) {
+        const sql = `SELECT * FROM employee`;
+
+        db.query(sql, (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            console.table(rows);
+        });
 
     },
     
     updateEmployeeManager: function(req, res) {
+        const sql = `SELECT * FROM employee`;
+
+        db.query(sql, (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            console.table(rows);
+        });
 
     },
     
     viewAllRoles: function(req, res) {
+        const sql = `SELECT * FROM roles`;
+
+        db.query(sql, (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            console.table(rows);
+        });
 
     },
     
-    addRole: function(req, res) {
+    addRole: function({ body }, res) {
+        const sql = `INSERT INTO role (title, salary, departments_id)
+        VALUES (?,?,?)`;
+
+        const params = [body.title, body.salary, body.departments_id];
+
+        db.query(sql, params, (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            console.table(rows);
+        });
 
     },
     
     removeRole: function(req, res) {
+        const sql = `DELETE role WHERE id=?`;
+        const params = [req.params.id];
+
+        db.query(sql, params, (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+            }
+            console.table(rows);
+        });
 
     },
     
